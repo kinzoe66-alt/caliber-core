@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Caliber</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      padding: 40px;
+    }
+    #status {
+      margin: 12px 0;
+      font-size: 16px;
+    }
+    .active {
+      color: green;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Caliber</h1>
+
+  <div id="status">Status: UI scaffold is live.</div>
+  <button id="runTestBtn">Run Test</button>
+
+  <script>
+    document
+      .getElementById("runTestBtn")
+      .addEventListener("click", () => {
+        const status = document.getElementById("status");
+        status.textContent = "Status: Button clicked. UI responding.";
+        status.classList.add("active");
+        console.log("UI test ran successfully");
+      });
+  </script>
+</body>
+</html>
