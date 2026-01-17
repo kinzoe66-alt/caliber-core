@@ -1,24 +1,21 @@
-export function createFilter(sessionLabel = "caliber_filter_v1") {
+export function createFilter() {
   const events = [];
-  let start = Date.now();
-  let lastEventAt = start;
+  let lastEventAt = Date.now();
 
   function record(type) {
-    const now = Date.now();
-    events.push({ type, t: now });
-    lastEventAt = now;
+    events.push({ type, at: Date.now() });
+    lastEventAt = Date.now();
   }
 
   document.addEventListener("click", () => record("click"));
-  document.addEventListener("keydown", () => record("key"));
+  document.addEventListener("mousemove", () => record("move"));
 
-  return function snapshot() {
-    const now = Date.now();
-    return {
-      session: sessionLabel,
-      durationMs: now - start,
-      idleMs: now - lastEventAt,
-      events
-    };
+  return {
+    snapshot() {
+      return {
+        events: [...events],
+        idleMs: Date.now() - lastEventAt
+      };
+    }
   };
 }

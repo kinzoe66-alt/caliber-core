@@ -1,11 +1,13 @@
 import { createFilter } from "./filter.js";
 import { evaluateSnapshot } from "./logic.js";
 
+const output = document.getElementById("output");
+const btn = document.getElementById("runBtn");
+
 const filter = createFilter();
 
-window.runTest = () => {
-  const snapshot = filter.export();
+btn.addEventListener("click", () => {
+  const snapshot = filter.snapshot();
   const result = evaluateSnapshot(snapshot);
-  document.getElementById("output").textContent =
-    JSON.stringify(result, null, 2);
-};
+  output.textContent = JSON.stringify(result, null, 2);
+});
