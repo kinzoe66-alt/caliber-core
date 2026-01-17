@@ -1,11 +1,20 @@
 import { createFilter } from "./filter.js";
 import { evaluateSnapshot } from "./logic.js";
 
-const filter = createFilter("caliber_filter_v1");
+const output = document.getElementById("output");
 
-window.runTest = () => {
+window.runTest = function runTest() {
+  const filter = createFilter("caliber_session");
+
+  // simulate interaction
+  filter.click();
+  filter.runTest();
+
   const snapshot = filter.snapshot();
   const result = evaluateSnapshot(snapshot);
-  console.log("SNAPSHOT:", snapshot);
-  console.log("INSIGHT:", result);
+
+  output.textContent = JSON.stringify(result, null, 2);
 };
+
+document.getElementById("runTestBtn")
+  .addEventListener("click", window.runTest);
