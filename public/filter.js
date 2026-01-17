@@ -1,37 +1,23 @@
-export function createFilter(label = "session") {
-  let events = [];
-  let lastEventAt = Date.now();
+export function createFilter(label = "caliber") {
+  const events = [];
+  let last = Date.now();
 
-  function now() {
-    return Date.now();
-  }
+  const record = (type) => {
+    const now = Date.now();
+    events.push({ type, at: now, delta: now - last });
+    last = now;
+  };
 
-  function record(type) {
-    events.push({ type, t: now() });
-    lastEventAt = now();
-  }
-
-  function click() {
-    record("click");
-  }
-
-  function snapshot() {
-    return {
-      label,
-      events: [...events],
-      idleMs: now() - lastEventAt,
-      createdAt: now()
-    };
-  }
-
-  function reset() {
-    events = [];
-    lastEventAt = now();
-  }
+  window.addEventListener("click", () => record("click"));
+  window.addEventListener("keydown", () => record("key"));
 
   return {
-    click,
-    snapshot,
-    reset
+    snapshot() {
+      return {
+        label,
+        events,
+        idleMs: Date.now() - last
+      };
+    }
   };
 }

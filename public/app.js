@@ -1,16 +1,13 @@
 import { createFilter } from "./filter.js";
 import { evaluateSnapshot } from "./logic.js";
 
-const output = document.getElementById("output");
-const btn = document.getElementById("runTestBtn");
+const out = document.getElementById("out");
+const btn = document.getElementById("run");
 
-const filter = createFilter("caliber_filter_v1");
+const filter = createFilter();
 
-btn.addEventListener("click", () => {
-  filter.click();
-
-  const snapshot = filter.snapshot();
-  const result = evaluateSnapshot(snapshot);
-
-  output.textContent = JSON.stringify(result, null, 2);
-});
+btn.onclick = () => {
+  const snap = filter.snapshot();
+  const res = evaluateSnapshot(snap);
+  out.textContent = JSON.stringify(res, null, 2);
+};
