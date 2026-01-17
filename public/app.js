@@ -1,20 +1,13 @@
-import { createFilter } from "./filter.js";
-import { evaluateSnapshot } from "./logic.js";
-import { getState, recordEvent } from "./state.js";
+const output = document.getElementById('output');
 
-const btn = document.getElementById("run");
-const output = document.getElementById("output");
-const status = document.getElementById("status");
-
-btn.addEventListener("click", () => {
-  recordEvent({ type: "click", ts: Date.now() });
-
-  const snapshot = getState();
-  const filter = createFilter();
-  const filtered = filter(snapshot);
-
-  const result = evaluateSnapshot(filtered);
-
-  status.textContent = "OK";
-  output.textContent = JSON.stringify(result, null, 2);
-});
+fetch('./recon.return.schema.json')
+  .then(res => {
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return res.json();
+  })
+  .then(data => {
+    output.textContent = JSON.stringify(data, null, 2);
+  })
+  .catch(err => {
+    output.textContent = 'FETCH ERROR: ' + err.message;
+  });
