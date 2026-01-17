@@ -1,15 +1,8 @@
-// logic.js — core truth engine
-
 export function evaluateSnapshot(snapshot) {
   const result = {
-    insights: [],
-    metrics: {}
+    metrics: {},
+    insights: []
   };
-
-  if (!snapshot || typeof snapshot !== "object") {
-    result.insights.push("Invalid snapshot");
-    return result;
-  }
 
   const events = snapshot.events || [];
   const idleMs = snapshot.idleMs || 0;
@@ -30,5 +23,6 @@ export function evaluateSnapshot(snapshot) {
     result.insights.push("Passive behavior without commitment");
   }
 
+  result.status = "ok";
   return result;
 }

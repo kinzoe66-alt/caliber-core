@@ -2,19 +2,15 @@ import { createFilter } from "./filter.js";
 import { evaluateSnapshot } from "./logic.js";
 
 const output = document.getElementById("output");
+const btn = document.getElementById("runTestBtn");
 
-window.runTest = function runTest() {
-  const filter = createFilter("caliber_session");
+const filter = createFilter("caliber_filter_v1");
 
-  // simulate interaction
+btn.addEventListener("click", () => {
   filter.click();
-  filter.runTest();
 
   const snapshot = filter.snapshot();
   const result = evaluateSnapshot(snapshot);
 
   output.textContent = JSON.stringify(result, null, 2);
-};
-
-document.getElementById("runTestBtn")
-  .addEventListener("click", window.runTest);
+});
