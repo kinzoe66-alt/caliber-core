@@ -1,12 +1,11 @@
-import { runUITest } from "./ui.js";
-import { runLogic } from "./logic.js";
+import { createFilter } from "./filter.js";
+import { evaluateSnapshot } from "./logic.js";
 
-document.addEventListener("DOMContentLoaded", () => {
-  document
-    .getElementById("runTestBtn")
-    .addEventListener("click", () => {
-      runUITest();
-      const result = runLogic();
-      console.log("Final result:", result);
-    });
-});
+const filter = createFilter("caliber_filter_v1");
+
+window.runTest = () => {
+  const snapshot = filter.snapshot();
+  const result = evaluateSnapshot(snapshot);
+  console.log("SNAPSHOT:", snapshot);
+  console.log("INSIGHT:", result);
+};

@@ -1,23 +1,33 @@
-// logic.js
-// Core execution logic — no UI, no filtering, just truth
+// logic.js — core truth engine
 
-export function executeLogic(state, filter) {
-  const snapshot = filter.snapshot();
-
+export function evaluateSnapshot(snapshot) {
   const result = {
-    ok: true,
-    timestamp: Date.now(),
-    eventsObserved: snapshot.events.length,
-    idleMs: snapshot.idleMs,
     insights: [],
+    metrics: {}
   };
 
-  if (snapshot.events.length === 0) {
+  if (!snapshot || typeof snapshot !== "object") {
+    result.insights.push("Invalid snapshot");
+    return result;
+  }
+
+  const events = snapshot.events || [];
+  const idleMs = snapshot.idleMs || 0;
+
+  result.metrics.eventCount = events.length;
+  result.metrics.idleMs = idleMs;
+
+  if (events.length === 0) {
     result.insights.push("No interaction detected");
   }
 
-  if (snapshot.idleMs > 10000) {
-    result.insights.push("Extended idle period detected");
+  if (idleMs > 10000) {
+    result.insights.push("Extended idle detected");
+  }
+
+  const clicks = events.filter(e => e.type === "click").length;
+  if (clicks === 0 && events.length > 0) {
+    result.insights.push("Passive behavior without commitment");
   }
 
   return result;
