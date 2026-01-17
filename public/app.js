@@ -1,17 +1,50 @@
-const btn = document.getElementById("run");
-const out = document.getElementById("output");
+import { state, setState } from "./state.js";
+import { log } from "./diagnostics.js";
+import { filterRecon } from "./filter.js";
 
-btn.addEventListener("click", async () => {
-  out.textContent = "Fetching recon data...";
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("runRecon");
+  const out = document.getElementById("output");
 
-  try {
-    const res = await fetch("./data/recon.sample.json");
-    if (!res.ok) throw new Error("Fetch failed");
+  btn.addEventListener("click", async () => {
+    setState({
+      status: "running",
+      lastRun: new Date().toISOString(),
+      diagnostics: []
+    });
 
-    const data = await res.json();
+    log(state.diagnostics, "Recon triggered");
 
-    out.textContent = JSON.stringify(data, null, 2);
-  } catch (err) {
-    out.textContent = "ERROR: " + err.message;
-  }
+    try {
+      const res = await fetch("./recon.return.schema.json");
+      if (!res.ok) throw new Error("Fetch failed");
+
+      const payload = await res.json();
+      log(state.diagnostics, "Payload loaded");
+
+      const filtered = filterRecon(payload);
+      log(state.diagnostics, "Payload filtered");
+
+      setState({
+        status: "complete",
+        checkpoint: filtered.checkpoint
+      });
+
+      out.textContent = JSON.stringify(
+        { state, result: filtered },
+        null,
+        2
+      );
+
+    } catch (e) {
+      log(state.diagnostics, e.message, "error");
+      setState({ status: "error" });
+
+      out.textContent = JSON.stringify(
+        { state, error: e.message },
+        null,
+        2
+      );
+    }
+  });
 });

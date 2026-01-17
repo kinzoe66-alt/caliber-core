@@ -1,5 +1,10 @@
-export function updateState() {
-  const state = { ok: true };
-  console.log("State updated:", state);
-  return state;
+export const state = {
+  status: "idle",
+  checkpoint: null,
+  lastRun: null,
+  diagnostics: []
+};
+
+export function setState(update) {
+  Object.assign(state, update);
 }
