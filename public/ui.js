@@ -3,9 +3,3 @@ export function runUITest() {
   status.textContent = "Status: Button clicked. UI responding.";
   console.log("UI test ran successfully");
 }
-
-export function resetUI() {
-  const status = document.getElementById("status");
-  status.textContent = "Status: UI scaffold is live.";
-  console.log("UI reset");
-}

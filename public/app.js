@@ -1,12 +1,12 @@
 import { runUITest } from "./ui.js";
-import { runLogicTest } from "./logic.js";
+import { runLogic } from "./logic.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   document
     .getElementById("runTestBtn")
     .addEventListener("click", () => {
       runUITest();
-      const result = runLogicTest("caliber_probe");
+      const result = runLogic();
       console.log("Final result:", result);
     });
 });

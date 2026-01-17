@@ -1,8 +1,5 @@
-export const state = {
-  lastAction: null
-};
-
-export function setState(action) {
-  state.lastAction = action;
+export function updateState() {
+  const state = { ok: true };
   console.log("State updated:", state);
+  return state;
 }
