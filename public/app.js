@@ -1,13 +1,18 @@
-const output = document.getElementById('output');
+const output = document.getElementById("output");
+const button = document.getElementById("runRecon");
 
-fetch('./recon.return.schema.json')
-  .then(res => {
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    return res.json();
-  })
-  .then(data => {
+async function runRecon() {
+  output.textContent = "Fetching recon artifact...";
+
+  try {
+    const res = await fetch("./recon.return.schema.json");
+    if (!res.ok) throw new Error("Fetch failed");
+
+    const data = await res.json();
     output.textContent = JSON.stringify(data, null, 2);
-  })
-  .catch(err => {
-    output.textContent = 'FETCH ERROR: ' + err.message;
-  });
+  } catch (err) {
+    output.textContent = "ERROR: " + err.message;
+  }
+}
+
+button.addEventListener("click", runRecon);
